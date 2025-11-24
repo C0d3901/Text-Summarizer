@@ -1,0 +1,17 @@
+from transformers import pipeline
+import streamlit as st
+
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+
+st.title("Text Summarizer")
+st.write("Paste your article or paragraph below, and get a summary!")
+
+user_text = st.text_area("Enter text here:")
+
+if st.button("Summarize"):
+    if user_text:
+        summary = summarizer(user_text, max_length=100, min_length=30, do_sample=False)
+        st.subheader("Summary:")
+        st.write(summary[0]['summary_text'])
+    else:
+        st.write("Please enter some text to summarize.")
